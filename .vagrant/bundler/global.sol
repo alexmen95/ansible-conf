@@ -1,0 +1,1 @@
+{"dependencies":[["vagrant-cachier",["= 1.2.1"]],["vagrant-faster",["= 0.2.0"]]],"checksum":"2651f68106b865fef7ac42a45f2940e38d37059186d0e1df90a30868b41557cb","vagrant_version":"2.3.4"}
