@@ -1,0 +1,36 @@
+---
+- hosts: web2
+  become: true
+
+  tasks: 
+
+         - name: Remove old file index.html
+           ansible.builtin.file:
+                   path: /var/www/html/index1.html
+                   state: absent
+
+         - name: Place new variant index.php in /var
+           ansible.builtin.copy:
+                   src: ../project/templates/index.php
+                   dest: /var/www/html/
+                   owner: vagrant
+                   group: vagrant
+                   mode: '0644'
+
+         - name: Remove old image tux.webp
+           ansible.builtin.file:
+                   path: /var/www/html/tux.webp
+                   state: absent
+
+         - name: Copy image in /var
+           ansible.builtin.copy:
+                   src: ../project/templates/success.jpg
+                   dest: /var/www/html
+                   owner: vagrant
+                   group: vagrant
+                   mode: '0644'
+
+         - name: Restart Apache server
+           ansible.builtin.service:
+                   name: httpd
+                   state: restarted 

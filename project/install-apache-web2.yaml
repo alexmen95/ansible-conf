@@ -1,0 +1,21 @@
+---
+- hosts: web2
+  become: true
+
+  tasks:
+          - name: Install Apache server on web2 server
+            dnf: 
+              name: httpd 
+              state: present
+
+          - name: Config Apache(Web) server
+            service:
+                    name: httpd
+                    state: started
+                    enabled: true
+
+          - name: Allow firewall for apache
+            ansible.builtin.systemd:
+                    name: httpd
+                    state: started
+                    enabled: yes

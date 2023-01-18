@@ -1,0 +1,32 @@
+---
+- hosts: web1
+  become: true
+
+  tasks:
+          - name: Copy file from local
+            ansible.builtin.copy:
+                    src: ../project/files/web-nginx.html
+                    dest: /website-nginx/
+                    owner: root
+                    group: root
+                    mode: '0644'
+
+          - name: Copy image success.png
+            ansible.builtin.copy:
+                    src: ../project/files/success.png
+                    dest: /website-nginx/
+                    owner: root
+                    group: root
+                    mode: '0644'
+
+          - name: Copy into container apache
+            ansible.builtin.command:
+                    docker cp /website-apache/index.html apache:/usr/local/apache2/htdocs/
+
+          - name: Copy into container mynginx
+            ansible.builtin.command:
+                    docker cp /website-nginx/web-nginx.html mynginx:/usr/share/nginx/html/
+                   
+          - name: Copy image into container mynginx
+            ansible.builtin.command:
+                    docker cp /website-nginx/success.png mynginx:/usr/share/nginx/html/

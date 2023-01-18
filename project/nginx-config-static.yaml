@@ -1,0 +1,43 @@
+---
+- hosts: web2
+  become: true
+  tasks:
+
+          - name: Create www directory to store static content
+            file:
+                    path: /data/www/
+                    state: directory
+                    mode: '0775'
+                    owner: root
+                    group: root
+
+          - name: Create directory for images
+            file:
+                    path: /data/images/
+                    state: directory
+                    mode: '0755'
+                    owner: root
+                    group: root
+
+          - name: Delete default nginx site
+            ansible.builtin.file:
+                    path: /etc/nginx/nginx.conf
+                    state: absent
+          
+          - name: Copy nginx config file
+            copy:
+                    src: ../project/templates/nginx.conf
+                    dest: /etc/nginx/
+          
+          - name: Copy index.html
+            template: >
+                    src=../project/templates/index.html
+                    dest=/data/www/index.html
+
+          - name: Copy image 
+            template: >
+                    src=../project/templates/tux.webp
+                    dest=/data/images/tux.webp
+          
+          - name: Restart nginx
+            service: name=nginx state=restarted
